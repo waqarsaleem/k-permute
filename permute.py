@@ -5,39 +5,33 @@ import random
 
 def get_random_lists():
     lists = []
-    num_lists = random.randrange(2, 5)
+    num_lists = random.randrange(2, 10)
     for _ in range(num_lists):
-        list_size = random.randrange(2, 5)
+        list_size = random.randrange(2, 10)
         lists.append(random.sample(range(100), list_size))
     return lists
 
+def advance_indices(indices, limits):
+    size = len(indices)
+    i = -1
+    indices[i] += 1
+    while indices[i] == limits[i] and i != -size:
+        indices[i] = 0
+        i -= 1
+        indices[i] += 1
+    if i == -size and indices[i] == limits[i]:
+        return []
+    return indices
+
 def get_permutations(lists):
-    if lists == []:
-        return [[]]
-    lower_permutations = get_permutations(lists[1:])
+    limits = [len(lst) for lst in lists]
+    indices = [0 for lst in lists]
     permutations = []
-    for n in lists[0]:
-        permutations.extend([[n]+lst for lst in lower_permutations])
-    return permutations
-
-def get_permutation_indices(lists):
-    if lists == []:
-        return [[]]
-    lower_permutations = get_permutation_indices(lists[1:])
-    permutations = []
-    for i in range(len(lists[0])):
-        permutations.extend([[i]+lst for lst in lower_permutations])
-    return permutations
-
-def get_permutations1(lists):
-    indices = get_permutation_indices(lists)
-    permutations = []
-    for lst in indices:
-        lst = [lists[i][j] for i,j in enumerate(lst)]
-        permutations.append(lst)
+    permutations.append([lists[i][j] for i,j in enumerate(indices)])
+    while indices := get_next_index(indices, limits):  # assignment expression, requires python 3.8
+        permutations.append([lists[i][j] for i,j in enumerate(indices)])
     return permutations
 
 lists = get_random_lists()
-# print(lists)
-# print(get_permutation_indices(lists))
-print(len(get_permutations1(lists)))
+print([len(lst) for lst in lists])
+print(len(get_permutations2(lists)))
