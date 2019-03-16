@@ -11,6 +11,7 @@ def get_random_lists():
         lists.append(random.sample(range(100), list_size))
     return lists
 
+# TODO: optmize using a generator
 def advance_indices(indices, limits):
     size = len(indices)
     i = -1
@@ -28,7 +29,10 @@ def get_permutations(lists):
     indices = [0 for lst in lists]
     permutations = []
     permutations.append([lists[i][j] for i,j in enumerate(indices)])
-    while indices := get_next_index(indices, limits):  # assignment expression, requires python 3.8
+    # := is syntax for "assignment expression" whcih requires python 3.8. It
+    # saves some lines of code.
+    # advance_indices can be opitmized through a generator.
+    while indices := advance_indices(indices, limits):
         permutations.append([lists[i][j] for i,j in enumerate(indices)])
     return permutations
 
