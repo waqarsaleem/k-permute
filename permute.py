@@ -20,6 +20,24 @@ def get_permutations(lists):
         permutations.extend([[n]+lst for lst in lower_permutations])
     return permutations
 
+def get_permutation_indices(lists):
+    if lists == []:
+        return [[]]
+    lower_permutations = get_permutation_indices(lists[1:])
+    permutations = []
+    for i in range(len(lists[0])):
+        permutations.extend([[i]+lst for lst in lower_permutations])
+    return permutations
+
+def get_permutations1(lists):
+    indices = get_permutation_indices(lists)
+    permutations = []
+    for lst in indices:
+        lst = [lists[i][j] for i,j in enumerate(lst)]
+        permutations.append(lst)
+    return permutations
+
 lists = get_random_lists()
-print(lists)
-print(get_permutations(lists))
+# print(lists)
+# print(get_permutation_indices(lists))
+print(len(get_permutations1(lists)))
