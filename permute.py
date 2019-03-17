@@ -25,8 +25,7 @@ def advance_indices(indices, limits):
     return indices
 
 def get_permutations(lists):
-    limits = [len(lst) for lst in lists]
-    indices = [0 for lst in lists]
+    limits, indices = zip(*[(len(lst),0) for lst in lists])
     permutations = []
     permutations.append([lists[i][j] for i,j in enumerate(indices)])
     # := is syntax for "assignment expression" whcih requires python 3.8. It
